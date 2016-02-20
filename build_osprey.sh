@@ -56,7 +56,7 @@ cp arch/arm/boot/dt.img cwm_flash_zip/tools/
 rm -f /home/zeeshan/afh/squid_kernel.zip
 cd cwm_flash_zip
 zip -r ../arch/arm/boot/inazuma_kernel.zip ./
-mv /home/zeeshan/inazuma-osprey/arch/arm/boot/inazuma_kernel.zip /home/zeeshan/afh
+mv /home/zeeshan/inazuma-osprey/arch/arm/boot/inazuma_kernel_osprey.zip /home/zeeshan/afh
 BUILD_END=$(date +"%s")
 DIFF=$(($BUILD_END - $BUILD_START))
 echo -e "$yellow Build completed in $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds.$nocol"
