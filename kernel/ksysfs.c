@@ -204,7 +204,6 @@ static struct attribute_group kernel_attr_group = {
 	.attrs = kernel_attrs,
 };
 
-static unsigned int Lgentle_fair_sleepers = 0;
 static int __init ksysfs_init(void)
 {
 	int error;
