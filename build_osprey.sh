@@ -19,7 +19,7 @@
 
 # Define variables
 Toolchain="/home/zeeshan/uber-5.2/bin/arm-eabi-"
-Kernel_DiR="/home/zeeshan/inazuma-osprey"
+Kernel_Dir="/home/zeeshan/inazuma-osprey"
 KERNEL="/home/zeeshan/inazuma-osprey/arch/arm/boot/zImage"
 Dtbtool="/home/zeeshan/inazuma-osprey/tools/dtbToolCM"
 

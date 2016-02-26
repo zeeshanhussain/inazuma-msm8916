@@ -19,7 +19,7 @@
 
 # Define variables
 Toolchain="/home/zeeshan/uber-5.2/bin/arm-eabi-"
-Kernel_DiR="/home/zeeshan/inazuma-osprey"
+Kernel_Dir="/home/zeeshan/inazuma-osprey"
 KERNEL="/home/zeeshan/inazuma-osprey/arch/arm/boot/zImage"
 Dtbtool="/home/zeeshan/inazuma-osprey/tools/dtbToolCM"
 
@@ -63,8 +63,8 @@ cp arch/arm/boot/zImage cwm_flash_zip/tools/
 cp arch/arm/boot/dt.img cwm_flash_zip/tools/
 rm -f /home/zeeshan/afh/squid_kernel.zip
 cd cwm_flash_zip
-zip -r ../arch/arm/boot/inazuma_kernel_osprey.zip ./
-mv $Kernel_Dir/arch/arm/boot/inazuma_kernel_osprey.zip /home/zeeshan/afh
+zip -r ../arch/arm/boot/inazuma_kernel_surnia.zip ./
+mv $Kernel_Dir/arch/arm/boot/inazuma_kernel_surnia.zip /home/zeeshan/afh
 BUILD_END=$(date +"%s")
 DIFF=$(($BUILD_END - $BUILD_START))
 echo -e "$yellow Build completed in $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds.$nocol"
