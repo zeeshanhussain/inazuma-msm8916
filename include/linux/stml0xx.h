@@ -239,6 +239,7 @@ enum sh_spi_msg {
 #define WAKE_IRQ_IDX_MODALITY_ACCUM_MVMT   52
 #define WAKE_IRQ_IDX_LOG_MSG               56
 #define WAKE_IRQ_IDX_STOWED_ALS		(WAKE_IRQ_IDX_LOG_MSG + LOG_MSG_SIZE)
+#define WAKE_IRQ_IDX_GLANCE                (WAKE_IRQ_IDX_STOWED_ALS + 2)
 
 /* stml0xx_readbuff offsets. */
 #define IRQ_WAKE_LO  0
@@ -249,48 +250,17 @@ enum sh_spi_msg {
 #define IRQ_NOWAKE_MED  1
 #define IRQ_NOWAKE_HI   2
 
-#define DOCK_STATE	0
-#define PROX_DISTANCE	0
-#define COVER_STATE	0
-#define HEADSET_STATE   0
-#define TOUCH_REASON	1
-#define FLAT_UP		0
-#define FLAT_DOWN	0
-#define STOWED_STATUS	0
-#define NFC_VALUE	0
-#define ALGO_TYPE	7
-#define COMPASS_STATUS	12
-#define DISP_VALUE	0
-#define ACCEL_RD_X	0
-#define ACCEL_RD_Y	2
-#define ACCEL_RD_Z	4
-#define MAG_X		0
-#define MAG_Y		2
-#define MAG_Z		4
-#define MAG_UNCALIB_X   6
-#define MAG_UNCALIB_Y   8
-#define MAG_UNCALIB_Z   10
-#define ORIENT_X	6
-#define ORIENT_Y	8
-#define ORIENT_Z	10
-#define GYRO_RD_X	0
-#define GYRO_RD_Y	2
-#define GYRO_RD_Z	4
-#define GYRO_UNCALIB_X	6
-#define GYRO_UNCALIB_Y	8
-#define GYRO_UNCALIB_Z	10
-#define ALS_VALUE	0
-#define TEMP_VALUE	0
-#define PRESSURE_VALUE	0
-#define GRAV_X		0
-#define GRAV_Y		2
-#define GRAV_Z		4
-#define CAMERA_VALUE	0
-#define CHOP_VALUE	0
-#define SIM_DATA	0
-#define LIFT_DISTANCE	0
-#define LIFT_ROTATION	4
-#define LIFT_GRAV_DIFF	8
+#define ALGO_TYPE_OFFSET 7
+#define ACCEL_X_OFFSET 0
+#define ACCEL_Y_OFFSET 2
+#define ACCEL_Z_OFFSET 4
+#define ALS_OFFSET 0
+#define CAMERA_OFFSET 0
+#define SIM_OFFSET 0
+#define LIFT_DISTANCE_OFFSET 0
+#define LIFT_ROTATION_OFFSET 4
+#define LIFT_GRAV_DIFF_OFFSET 8
+#define GLANCE_OFFSET 0
 
 #define STML0XX_LED_MAX_DELAY 0xFFFF
 #define STML0XX_LED_MAX_BRIGHTNESS 0x00FFFFFF
@@ -306,6 +276,25 @@ enum sh_spi_msg {
 
 #define STML0XX_HALL_SOUTH 1
 #define STML0XX_HALL_NORTH 2
+
+/**
+ * struct stml0xx_ioctl_work_struct - struct for deferred ioctl data
+ * @ws base struct
+ * @cmd ioctl number
+ * @data ioctl data
+ * @data_len length of @data
+ * @algo_req_ndx index into @stml0xx_g_algo_requst
+ */
+struct stml0xx_ioctl_work_struct {
+	struct work_struct ws;
+	unsigned int cmd;
+	union {
+		unsigned char bytes[32];
+		unsigned short delay;
+	} data;
+	unsigned char data_len;
+	size_t algo_req_ndx;
+};
 
 struct stml0xx_platform_data {
 	int (*init) (void);
@@ -362,6 +351,7 @@ struct stml0xx_data {
 	struct work_struct clear_interrupt_status_work;
 	struct work_struct initialize_work;
 	struct workqueue_struct *irq_work_queue;
+	struct workqueue_struct *ioctl_work_queue;
 	struct wake_lock wakelock;
 	struct wake_lock wake_sensor_wakelock;
 	struct wake_lock reset_wakelock;
