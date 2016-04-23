@@ -2484,6 +2484,8 @@ static ssize_t hbm_store(struct device *dev,
 	}
 
 	r = kstrtoint(buf, 0, &enable);
+	if (enable > 1)
+		enable = 1;
 	if ((r) || ((enable != 0) && (enable != 1))) {
 		pr_err("invalid HBM value = %d\n",
 			enable);
@@ -2515,11 +2517,11 @@ end:
 	return r ? r : count;
 }
 
-static DEVICE_ATTR(hbm, S_IWUSR | S_IWGRP | S_IRUSR | S_IRGRP,
+static DEVICE_ATTR(sre, S_IWUSR | S_IWGRP | S_IRUSR | S_IRGRP,
 		hbm_show, hbm_store);
 
 static struct attribute *hbm_attrs[] = {
-	&dev_attr_hbm.attr,
+	&dev_attr_sre.attr,
 	NULL,
 };
 
