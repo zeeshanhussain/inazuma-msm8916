@@ -4286,24 +4286,7 @@ static int msm8x16_wcd_codec_probe(struct snd_soc_codec *codec)
 					msm8x16_wcd_priv->pmic_rev);
 
 
-		if (msm8x16_wcd_priv->pmic_rev == TOMBAK_1_0 &&
-			(snd_soc_read(codec, MSM8X16_WCD_A_ANALOG_NCP_FBCTRL)
-			 & 0x80)) {
-			msm8x16_wcd_priv->codec_version = CAJON;
-			dev_dbg(codec->dev, "%s : Cajon detected\n", __func__);
-#ifdef CONFIG_SOUND_CONTROL_HAX_3_GPL
-			wcd9xxx_hw_revision = 1;
-#endif
-		} else if (msm8x16_wcd_priv->pmic_rev == TOMBAK_2_0 &&
-			(snd_soc_read(codec, MSM8X16_WCD_A_ANALOG_NCP_FBCTRL)
-			 & 0x80)) {
-			msm8x16_wcd_priv->codec_version = CAJON_2_0;
-			dev_dbg(codec->dev, "%s : Cajon 2.0 detected\n",
-						__func__);
-#ifdef CONFIG_SOUND_CONTROL_HAX_3_GPL
-			wcd9xxx_hw_revision = 2;
-#endif
-		}
+		
 
 	}
 	/*
